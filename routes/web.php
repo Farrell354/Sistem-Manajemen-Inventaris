@@ -24,10 +24,12 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     // --- FITUR MASTER BARANG ---
+    Route::get('/master-barang/export/excel', [ProductController::class, 'exportExcel'])->name('products.export.excel');
     Route::get('/master-barang/export-pdf', [ProductController::class, 'exportPdf'])->name('products.export_pdf');
     Route::get('/master-barang', [ProductController::class, 'index'])->name('products.index');
     Route::get('/master-barang/create', [ProductController::class, 'create'])->name('products.create');
     Route::post('/master-barang', [ProductController::class, 'store'])->name('products.store');
+    Route::get('/master-barang/{id}/detail', [ProductController::class, 'show'])->name('products.show');
     Route::get('/master-barang/{product}/edit', [ProductController::class, 'edit'])->name('products.edit');
     Route::put('/master-barang/{product}', [ProductController::class, 'update'])->name('products.update');
     Route::delete('/master-barang/{product}', [ProductController::class, 'destroy'])->name('products.destroy');
@@ -41,7 +43,6 @@ Route::middleware('auth')->group(function () {
 
     // --- FITUR LAPORAN (Hanya Super Admin & Manager) ---
     Route::get('/laporan', function () {
-        // Cek apakah role_id adalah 1 (Super Admin) atau 2 (Manager)
         if (in_array(auth()->user()->role_id, [1, 2])) {
             return view('laporan.index');
         }
@@ -49,7 +50,6 @@ Route::middleware('auth')->group(function () {
     })->name('laporan.index');
 
     // --- FITUR KELOLA PENGGUNA ---
-    // (Keamanannya sudah kita gembok dari dalam UserController khusus untuk Super Admin)
     Route::get('/users', [UserController::class, 'index'])->name('users.index');
     Route::get('/users/create', [UserController::class, 'create'])->name('users.create');
     Route::post('/users', [UserController::class, 'store'])->name('users.store');

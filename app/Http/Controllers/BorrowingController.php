@@ -22,11 +22,11 @@ class BorrowingController extends Controller
 
     // Menampilkan Form Peminjaman
     public function create()
-    {
-        // Hanya tampilkan barang yang stoknya lebih dari 0
-        $products = Product::where('stok', '>', 0)->get();
-        return view('borrowings.create', compact('products'));
-    }
+{
+    // Ambil barang yang stoknya masih ada aja biar gak error
+    $products = Product::where('stok', '>', 0)->get();
+    return view('borrowings.create', compact('products'));
+}
 
     // Memproses Data Peminjaman (Kurangi Stok)
     public function store(Request $request)
